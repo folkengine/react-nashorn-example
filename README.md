@@ -33,7 +33,26 @@ Alternatively, if you don't want to replace your system java, do the following:
 
 ### Mac OS X
 
-Please contribute a pull request :)
+Download and install the JDK 8 from [Oracle](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+
+For easy switching between installed JDKs, add the following script to your .bash_profile:
+
+	function setjdk() {
+	  if [ $# -ne 0 ]; then
+	   removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
+	   if [ -n "${JAVA_HOME+x}" ]; then
+	    removeFromPath $JAVA_HOME
+	   fi
+	   export JAVA_HOME=`/usr/libexec/java_home -v $@`
+	   export PATH=$JAVA_HOME/bin:$PATH
+	  fi
+	 }
+	 function removeFromPath() {
+	  export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")
+	 }
+	setjdk 1.8
+
+[Source](http://www.jayway.com/2014/01/15/how-to-switch-jdk-version-on-mac-os-x-maverick/)
 
 ### Windows
 
